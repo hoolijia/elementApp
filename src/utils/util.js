@@ -1,6 +1,6 @@
 const config = require('../../config.json')
 
-export function isEmpty(value) {
+export function isEmpty (value) {
   return (
     value === undefined ||
     value === null ||
@@ -9,7 +9,7 @@ export function isEmpty(value) {
   )
 }
 
-export function regex(value, type) {
+export function regex (value, type) {
   if (type === config._regex_type._phone) {
     if (!/^1[345678]\d{9}$/.test(value)) {
       return false

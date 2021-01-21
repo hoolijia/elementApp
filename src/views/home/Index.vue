@@ -55,4 +55,16 @@
   text-align: center;
   color: #aaa;
 }
+
+.fixedview {
+  width: 100%;
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+}
+
+.mint-loadmore {
+  height: calc(100% - 95px);
+  overflow: auto;
+}
 </style>

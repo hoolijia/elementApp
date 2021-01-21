@@ -6,6 +6,7 @@ import OrderRouter from './order/router'
 import MeRouter from './me/router'
 import AddressRouter from './address/router'
 import CityRouter from './city/router'
+import AddressManagerRouter from './addressManager/router'
 
 Vue.use(VueRouter)
 
@@ -25,7 +26,8 @@ const routes = [
       ...CityRouter
     ]
   },
-  ...LoginRouter
+  ...LoginRouter,
+  ...AddressManagerRouter
 ]
 
 const router = new VueRouter({

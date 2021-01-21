@@ -1,4 +1,6 @@
 import axios from 'axios'
+import qs from 'qs'
+import { Indicator } from 'mint-ui'
 
 const service = axios.create({
   // headers: {
@@ -8,17 +10,36 @@ const service = axios.create({
   // timeout: 50000
 })
 
-// service.interceptors.request.use(
-//   config => {
-//     const userInfo = JSON.parse(localStorage.getItem('user'))
-//     if (userInfo){
-//       config.headers["userId"] = userInfo.userId
-//     }
-//     return config
-//   },
-//   error => {
-//     Promise.reject(error)
-//   }
-// )
+// 请求拦截
+service.interceptors.request.use(
+  config => {
+    if (config.method === 'post') {
+      config.data = qs.stringify(config.data)
+    }
+
+    // 加载动画
+    Indicator.open({
+      text: '加载中...',
+      spinnerType: 'fading-circle'
+    })
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+// 响应拦截
+service.interceptors.response.use(
+  response => {
+    Indicator.close()
+    return response
+  },
+  error => {
+    // 错误提醒
+    Indicator.close()
+    return Promise.reject(error)
+  }
+)
 
 export default service

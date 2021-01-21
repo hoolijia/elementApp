@@ -1,41 +1,43 @@
 import InputGroup from '@/components/InputGroup/Index'
-import {isEmpty, regex} from '@/utils/util'
-import {getCode, login} from '@/api/login/request'
+import { isEmpty, regex } from '@/utils/util'
+import { getCode, login } from '@/api/login/request'
 
 const config = require('../../../config.json')
 const msg = require('../../../msg.json')
 
 export default {
-  name: "Login",
-  data() {
+  name: 'Login',
+  data () {
     return {
       phone: '',
       verifyCode: '',
       errors: {},
       btnTitle: '获取验证码',
-      disable: false,
+      disable: false
     }
   },
   computed: {
-    isClick() {
-      if (!this.phone || !this.verifyCode)
+    isClick () {
+      if (!this.phone || !this.verifyCode) {
         return true
-      else
+      } else {
         return false
+      }
     }
   },
   methods: {
-    handleLogin() {
+    handleLogin () {
       this.errors = {}
       const req = {
         phone: this.phone,
         code: this.verifyCode
       }
+
       login(req)
         .then(res => {
           // 登录成功，设置登录状态并且跳转到首页
-          localStorage.setItem('ele_login', true)
-          this.$router.push("/")
+          localStorage.setItem('ele_login', res.data.user._id)
+          this.$router.push('/')
         })
         .catch(err => {
           this.errors = {
@@ -43,14 +45,14 @@ export default {
           }
         })
     },
-    getVerifyCode() {
+    getVerifyCode () {
       if (this.validatePhone()) {
         this.validateBtn()
         const req = {
-          sid: "",
-          token: "",
-          appid: "",
-          templateid: "",
+          sid: '',
+          token: '',
+          appid: '',
+          templateid: '',
           phone: this.phone
         }
         getCode(req).then(res => {
@@ -58,7 +60,7 @@ export default {
         })
       }
     },
-    validatePhone() {
+    validatePhone () {
       if (isEmpty(this.phone)) {
         this.errors = {
           phone: msg._error._login._validate_phone_null
@@ -75,15 +77,15 @@ export default {
       return true
     },
     // 倒计时
-    validateBtn() {
+    validateBtn () {
       let time = 60
-      let timer = setInterval(() => {
+      const timer = setInterval(() => {
         if (time === 0) {
           clearInterval(timer)
-          this.btnTitle = "获取验证码"
+          this.btnTitle = '获取验证码'
           this.disable = false
         } else {
-          this.btnTitle = time + "秒后重试"
+          this.btnTitle = time + '秒后重试'
           this.disable = true
           time--
         }
